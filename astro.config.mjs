@@ -8,6 +8,8 @@ export default defineConfig({
       title: 'My Docs',
       social: {
         github: 'https://github.com/jsparkdev',
+        'x.com': 'https://x.com/jsparkdev',
+        linkedin: 'https://www.linkedin.com/in/jsparkdev/?locale=en_US',
       },
       sidebar: [
         {
