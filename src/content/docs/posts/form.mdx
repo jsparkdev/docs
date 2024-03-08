@@ -80,25 +80,36 @@ import { Steps, Aside } from '@astrojs/starlight/components';
 </Steps>
 
 
-## 리디렉션
+### 리디렉션
 
-- POST 요청 후 뒤로 가기 버튼을 누르면 양식 재제출 경고 알림이 나타납니다. 이는 브라우저가 동일한 요청을 다시 보내려고 하기 때문입니다.
-- 즉, 이는 송금이나 물건 구매가 또 다시 일어날 수 있다는 의미입니다.
-- 이러한 이유로 POST 요청에 대한 응답은 HTML이 아닌, 리디렉션을 사용해야 하며, 이를 위해 일반적으로 PRG 패턴이 사용됩니다.
-- 리디렉션의 과정은 다음과 같습니다.
-  1. POST 요청 전송
-  2. 302 상태 코드와 함께 Location 헤더를 응답에 포함하여 클라이언트로 전송
-  3. 클라이언트는 Location 헤더에 있는 주소로 GET 요청 전송
-  4. 서버는 해당 주소에 해당하는 HTML을 응답으로 전송
+POST 요청을 전송한 후, 브라우저의 뒤로 가기 버튼을 누르면 양식 재제출 경고 알림이 나타납니다.
 
-리디렉션을 위한 코드는 다음과 같습니다.
+이는 브라우저가 동일한 요청을 다시 전송하려고 하기 때문입니다. 즉, 이전에 수행한 송금, 물건 구매 등의 작업이 또 다시 일어날 수 있다는 의미입니다.
 
-```js
-throw new Response(null, { status: 302, headers: { Location: '/login' } });
-```
+이러한 이유로, POST 요청을 받은 서버는 HTML이 아닌 다른 응답을 전송해야 합니다. 이러한 문제를 해결하기 위해 PRG 패턴을 통한 리디렉션을 사용합니다. 
 
-리믹스와 같은 프레임워크는 이를 단순화합니다.
+PRG 패턴을 통한 리디렉션은 다음 순서로 동작합니다.
 
-```js
-throw redirect('/login');
-```
+<Steps>
+  1. 클라이언트가 서버로 POST 요청을 전송합니다.
+      ```html
+      <form action="https://example.com" method="POST">
+        <input type="text" name="name" value="John Doe" />
+        <input type="number" name="age" value="25" />
+        <button type="submit">Submit</button>
+      </form>
+      ```
+      
+      ```bash
+      POST https://example.com
+      ```
+  2. 요청을 받은 서버는 응답 객체에 302 상태 코드와 Location 헤더를 추가하여 클라이언트로 응답을 전송합니다.
+      ```js
+      res.status(302).set('Location', '/login').send();
+      ```
+  3. 응답을 받은 클라이언트는 Location 헤더에 있는 주소로 GET 요청을 전송합니다. 이는 302 상태코드를 수신한 브라우저의 기본 동작입니다.
+  4. GET 요청을 받은 서버는 HTML을 응답으로 전송합니다.
+  5. 응답을 받은 클라이언트는 서버가 전송한 HTML을 렌더링합니다.
+  6. 마지막 작업이 GET 요청이었기 때문에 더이상 양식이 재제출되지 않습니다.
+
+</Steps>
