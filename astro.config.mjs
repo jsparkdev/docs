@@ -5,11 +5,11 @@ import starlight from '@astrojs/starlight';
 export default defineConfig({
   integrations: [
     starlight({
-      title: 'My Docs',
+      title: '가이드북',
       social: {
         github: 'https://github.com/jsparkdev',
         'x.com': 'https://x.com/jsparkdev',
-        linkedin: 'https://www.linkedin.com/in/jsparkdev/?locale=en_US',
+        linkedin: 'https://www.linkedin.com/in/jsparkdev',
       },
       sidebar: [
         {
