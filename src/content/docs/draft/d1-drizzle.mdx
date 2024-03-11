@@ -1,0 +1,136 @@
+---
+title: D1 + Drizzle ORM
+---
+
+1. 가장 먼저, D1 데이터베이스를 생성합니다. 아래 명령은 데이터베이스 생성 후 바인딩 정보를 콘솔에 출력합니다.
+
+```bash
+pnpm wrangler d1 create db-name
+```
+
+2. 출력된 바인딩 정보를 `wrangler.toml` 파일에 붙여넣습니다. 이 파일을 통해 워커가 D1에 액세스할 수 있습니다.
+
+```toml
+[[d1_databases]]
+binding = "DB" # i.e. available in your Worker on env.DB
+database_name = "DB_NAME"
+database_id = "<db_id>"
+```
+
+3. D1 데이터베이스의 타입을 생성하기 위해 다음 명령을 실행합니다.
+```bash
+pnpm wrangler types
+```
+
+3. 스키마 파일을 생성합니다.
+
+```ts title="drizzle/schema.ts"
+import { relations } from "drizzle-orm";
+import { sqliteTable, text, integer } from "drizzle-orm/sqlite-core";
+
+export const users = sqliteTable("users", {
+	id: integer("id").primaryKey(),
+	name: text("name"),
+	email: text("email").unique().notNull(),
+	username: text("username").unique().notNull(),
+});
+
+export const items = sqliteTable("items", {
+	id: integer("id").primaryKey(),
+	name: text("name").notNull(),
+	description: text("description"),
+	price: integer("price").notNull(),
+	userId: integer("userId")
+		.notNull()
+		.references(() => users.id),
+});
+
+export const itemsRelations = relations(items, ({ one }) => ({
+	user: one(users, {
+		fields: [items.userId],
+		references: [users.id],
+	}),
+}));
+```
+
+4. drizzle이 스키마 및 데이터베이스 정보를 인지할 수 있도록 설정 파일을 작성합니다.
+
+```ts title="drizzle.config.ts"
+import type { Config } from "drizzle-kit";
+
+export default {
+	schema: "./app/drizzle/schema.server.ts",
+	out: "./app/drizzle",
+	driver: "d1",
+	dbCredentials: {
+		wranglerConfigPath: "wrangler.toml",
+		dbName: "DB_NAME",
+	},
+} satisfies Config;
+```
+
+5. 스키마를 기반으로 마이그레이션을 생성하기 위해 아래 명령을 실행합니다. 이 명령을 `drizzle` 디렉터리에 마이그레이션 파일을 생성합니다.
+
+```bash
+pnpm drizzle-kit generate:sqlite
+```
+
+6. 이렇게 마이그레이션 SQL 파일을 생성했으므로, 이를 로컬 데이터베이스에 적용해야 합니다. 우선 wrangler가 마이그레이션 파일들의 위치를 인지하기 위해 `wrangler.toml` 파일에 아래 코드를 추가합니다.
+```toml
+migrations_dir = "./app/drizzle"
+```
+
+잘 설정되었는지 확인하기 위해 아래 명령을 실행하여 마이그레이션 파일들의 목록을 확인할 수 있습니다.
+
+```bash
+pnpm wrangler d1 migrations list DB_NAME
+```
+
+잘 설정되었다면 아래 명령을 통해 로컬 데이터베이스에 마이그레이션을 진행합니다. 이 로컬 데이터베이스는 개발 모드에서 사용할 수 있습니다.
+```bash
+pnpm wrangler d1 migrations apply DB_NAME --local
+```
+
+개발 모드에서 Drizzle ORM을 통해 다양한 작업을 수행합니다.
+```tsx title="app/routes/index.tsx"
+export const loader = async ({ context }: LoaderFunctionArgs) => {
+	const db = drizzle(context.cloudflare.env.DB);
+
+	await db.insert(users).values({
+		id: 1,
+		name: "Junseong Park",
+		email: "x@jspark.dev",
+		username: "jsparkdev",
+	});
+
+	await db.insert(items).values({
+		id: 1,
+		name: "Macbook Air M1",
+		price: 500000,
+		description: "My Computer",
+		userId: 1,
+	});
+
+	const userList = await db.select().from(users);
+	const itemList = await db.select().from(items);
+
+	return json({ userList, itemList });
+};
+```
+
+개발 모드에서 사용 후, 실제 데이터베이스에 마이그레이션을 적용하기 위해 아래 명령을 실행합니다.
+```bash
+pnpm wrangler d1 migrations apply DB_NAME
+```
+
+이렇게 실제 데이터베이스에 마이그레이션을 적용할 수 있습니다.
+
+
+
+# 문제점
+
+참고로, 시드 스크립트 실행이나 Drizzle ORM을 이용한 마이그레이션을 어떻게 해야할지 모르겠음.
+
+데이터베이스에 접근할 수 있는 객체를 별도의 스크립트 파일인 seed.ts, migrate.ts로 가져올 수만 있으면 문제없이 해결이 가능한데
+
+이는 loader 함수의 context에서만 접근이 가능하므로 어떻게 해결해야할지 생각을 해봐야할듯.
