@@ -15,8 +15,12 @@ export default defineConfig({
       },
       sidebar: [
         {
-          label: 'Posts',
-          autogenerate: { directory: 'posts' },
+          label: 'Guides',
+          autogenerate: { directory: 'guides' },
+        },
+        {
+          label: 'References',
+          autogenerate: { directory: 'references' },
         },
       ],
       locales: {
