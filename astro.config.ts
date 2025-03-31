@@ -6,11 +6,10 @@ export default defineConfig({
   integrations: [
     starlight({
       title: "Docs",
+      pagination: false,
       sidebar: [
-        {
-          label: "Reference",
-          autogenerate: { directory: "reference" },
-        },
+        { label: "팁", link: "/tips" },
+        { label: "안드로이드 개발 자료", link: "/android" },
       ],
     }),
   ],
