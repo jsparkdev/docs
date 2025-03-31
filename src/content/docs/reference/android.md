@@ -2,31 +2,31 @@
 title: 안드로이드 개발
 ---
 
-## 컴포저블 (Composable)
+## 컴포저블
 
-UI를 생성하는 함수
+- `@Composable` 주석
+- 파스칼 케이스 사용
+- 값을 반환하지 않음
+- 인수가 변경되면 UI 자동 업데이트
 
-### 함수 선언
+## 콘텐츠 컴포저블
 
-- 함수 선언 위에 `@Composable` 주석이 필요합니다.
-- 함수 이름은 파스칼 케이스이며, 명사로 사용합니다.
-- 값을 반환하지 않습니다.
+- [Text](https://developer.android.com/reference/kotlin/androidx/compose/material/package-summary#Text(androidx.compose.ui.text.AnnotatedString,androidx.compose.ui.Modifier,androidx.compose.ui.graphics.Color,androidx.compose.ui.unit.TextUnit,androidx.compose.ui.text.font.FontStyle,androidx.compose.ui.text.font.FontWeight,androidx.compose.ui.text.font.FontFamily,androidx.compose.ui.unit.TextUnit,androidx.compose.ui.text.style.TextDecoration,androidx.compose.ui.text.style.TextAlign,androidx.compose.ui.unit.TextUnit,androidx.compose.ui.text.style.TextOverflow,kotlin.Boolean,kotlin.Int,kotlin.Int,kotlin.collections.Map,kotlin.Function1,androidx.compose.ui.text.TextStyle)): 텍스트 렌더링
+- [Image](https://developer.android.com/reference/kotlin/androidx/compose/foundation/package-summary#Image(androidx.compose.ui.graphics.painter.Painter,kotlin.String,androidx.compose.ui.Modifier,androidx.compose.ui.Alignment,androidx.compose.ui.layout.ContentScale,kotlin.Float,androidx.compose.ui.graphics.ColorFilter)): 이미지 렌더링
+  - [painterResource](https://developer.android.com/reference/kotlin/androidx/compose/ui/res/package-summary#painterResource(kotlin.Int)): `Image` 컴포저블에 전달하는 `Painter` 생성
 
-### 함수 호출
 
-다른 컴포저블 또는 `setContent` 함수에서 호출할 수 있습니다.
+## 레이아웃 컴포저블
 
-### 수정자 (Modifier)
+- [Row](https://developer.android.com/reference/kotlin/androidx/compose/foundation/layout/package-summary#Row(androidx.compose.ui.Modifier,androidx.compose.foundation.layout.Arrangement.Horizontal,androidx.compose.ui.Alignment.Vertical,kotlin.Function1)): 컴포저블을 가로로 배치
+- [Column](https://developer.android.com/reference/kotlin/androidx/compose/foundation/layout/package-summary#Column(androidx.compose.ui.Modifier,androidx.compose.foundation.layout.Arrangement.Vertical,androidx.compose.ui.Alignment.Horizontal,kotlin.Function1)): 컴포저블을 세로로 배치
+- [Box](https://developer.android.com/reference/kotlin/androidx/compose/foundation/layout/package-summary#Box(androidx.compose.ui.Modifier)): 컴포저블을 겹치도록 배치 (Z축)
 
-- 컴포저블을 강화하거나 장식하기 위해 사용하는 매개변수입니다.
-- 모든 컴포저블은 하위 컴포넌트로 전달하기 위해 항상 `modifier` 인수를 전달받는게 좋습니다.
+## 컨테이너 컴포저블
 
-## 컴포저블 종류
+- [Surface](https://developer.android.com/reference/kotlin/androidx/compose/material/package-summary#Surface(androidx.compose.ui.Modifier,androidx.compose.ui.graphics.Shape,androidx.compose.ui.graphics.Color,androidx.compose.ui.graphics.Color,androidx.compose.foundation.BorderStroke,androidx.compose.ui.unit.Dp,kotlin.Function0)): 배경 색 설정할 때 사용
 
-- `Text`: 텍스트를 작성합니다.
-- `Row`, `Column`: 컴포저블을 배치하는 방향을 정합니다.
+## 팁
 
-## JatPack Compose
-
-- `@Composable`, `@Preview` 등 다양한 주석을 제공합니다.
-- 컴포즈 컴파일러는 `@Composable` 주석을 보고, 해당 함수를 UI로 변환합니다.
+- `import`는 찾기 쉽도록 정렬하기 (Ctrl + Alt + O)
+- 이미지, 문자열 등은 [리소스](https://developer.android.com/guide/topics/resources/available-resources?hl=ko)로 관리하여 `R` 클래스를 통해 가져와 사용
