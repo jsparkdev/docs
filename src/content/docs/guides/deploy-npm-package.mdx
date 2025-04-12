@@ -1,0 +1,90 @@
+---
+title: NPM 패키지 배포하기
+description: NPM 패키지를 배포하는 방법에 대한 가이드입니다.
+---
+import { Steps } from '@astrojs/starlight/components';
+
+<Steps>
+1. NPM에 로그인합니다.
+
+    ```shell
+    npm login
+    ```
+
+2. `package.json` 파일을 설정합니다.
+
+    다음은 ESM 패키지를 배포하기 위한 최소한의 필수 설정입니다.
+
+    ```json title="package.json"
+    {
+      "name": "your-package-name",
+      "version": "1.0.0",
+      "type": "module",
+      "exports": {
+        ".": {
+          "import": "./dist/index.js",
+          "types": "./dist/index.d.ts"
+        }
+      },
+      "files": [
+        "dist",
+        "README.md",
+        "LICENSE"
+      ],
+      "engines": {
+        "node": ">=20.0.0"
+      },
+    }
+    ```
+
+    다음과 같이 선택적으로 메타 데이터를 추가할 수 있습니다.
+
+    ```json title="package.json"
+    {
+      "description": "A lightweight ESM utility package",
+      "keywords": ["esm", "typescript", "utility"],
+      "license": "MIT",
+      "author": "Your Name <your.email@example.com>",
+      "homepage": "https://github.com/your-username/your-package-name",
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/your-username/your-package-name.git"
+      },
+      "bugs": {
+        "url": "https://github.com/your-username/your-package-name/issues"
+      },
+    }
+    ```
+
+3. 버전을 업데이트합니다.
+
+    다음은 Git 태그와 커밋 메시지를 생성합니다. (예: `v1.0.0`)
+
+    ```shell
+    npm version patch # 또는 minor, major
+    ```
+
+4. 빌드를 수행합니다.
+
+    ```shell
+    npm run build
+    ```
+
+5. 배포를 시뮬레이션합니다.
+   
+    ```shell
+    npm publish --dry-run
+    ```
+
+6. 코드의 변경 사항과 태그를 함께 푸시합니다.
+
+    ```shell
+    git push origin main --follow-tags
+    ```
+
+7. 배포를 수행합니다.
+
+    ```shell
+    npm publish
+    ```
+</Steps>
