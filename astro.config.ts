@@ -20,6 +20,7 @@ export default defineConfig({
   integrations: [
     starlight({
       title: '문서 모음',
+      description: '문서 모음입니다.',
       social: [{ icon: 'github', label: 'GitHub', href: 'https://github.com/jsparkdev/docs' }],
       locales: {
         root: {
@@ -33,6 +34,21 @@ export default defineConfig({
         dark: { flavor: 'mocha', accent: 'green' },
       })],
       pagination: false,
+      customCss: [
+        './src/styles/font.css',
+      ],
+      head: [
+        {
+          tag: 'link',
+          attrs: {
+            rel: 'preload',
+            as: 'font',
+            type: 'font/woff2',
+            crossorigin: true,
+            href: '/jetbrains-mono.woff2',
+          },
+        },
+      ],
     }),
   ],
 })
