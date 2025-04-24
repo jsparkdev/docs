@@ -5,6 +5,7 @@
       "name": "docs",
       "dependencies": {
         "@astrojs/starlight": "^0.34.0",
+        "@catppuccin/starlight": "^1.0.0",
         "astro": "^5.7.5",
         "sharp": "^0.34.1",
       },
@@ -48,6 +49,8 @@
     "@babel/types": ["@babel/types@7.27.0", "", { "dependencies": { "@babel/helper-string-parser": "^7.25.9", "@babel/helper-validator-identifier": "^7.25.9" } }, "sha512-H45s8fVLYjbhFH62dIJ3WtmJ6RSPt/3DRO0ZcT2SUiYiQyz3BLVb9ADEnLl91m74aQPS3AzzeajZHYOalWe3bg=="],
 
     "@capsizecss/unpack": ["@capsizecss/unpack@2.4.0", "", { "dependencies": { "blob-to-buffer": "^1.2.8", "cross-fetch": "^3.0.4", "fontkit": "^2.0.2" } }, "sha512-GrSU71meACqcmIUxPYOJvGKF0yryjN/L1aCuE9DViCTJI7bfkjgYDPD1zbNDcINJwSSP6UaBZY9GAbYDO7re0Q=="],
+
+    "@catppuccin/starlight": ["@catppuccin/starlight@1.0.0", "", { "dependencies": { "@astrojs/starlight": "^0.34.0" }, "peerDependencies": { "astro": "^5.0.0" } }, "sha512-eUs+bE+JHvJWyr7E0j0UF4QEhI2OC064anE30X/pVStTXybg/BfsbKiH3k1egvluLgiyK86Zg86+Sypv8xGGVA=="],
 
     "@clack/core": ["@clack/core@0.4.2", "", { "dependencies": { "picocolors": "^1.0.0", "sisteransi": "^1.0.5" } }, "sha512-NYQfcEy8MWIxrT5Fj8nIVchfRFA26yYKJcvBS7WlUIlw2OmQOY9DhGGXMovyI5J5PpxrCPGkgUi207EBrjpBvg=="],
 

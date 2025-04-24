@@ -1,4 +1,5 @@
 import starlight from '@astrojs/starlight'
+import catppuccin from '@catppuccin/starlight'
 import { defineConfig } from 'astro/config'
 
 const sidebar: ReturnType<typeof sidebarItem>[] = [
@@ -18,7 +19,7 @@ export default defineConfig({
   site: 'https://docs.jspark.dev',
   integrations: [
     starlight({
-      title: 'Docs',
+      title: '문서 모음',
       social: [{ icon: 'github', label: 'GitHub', href: 'https://github.com/jsparkdev/docs' }],
       locales: {
         root: {
@@ -27,6 +28,11 @@ export default defineConfig({
         },
       },
       sidebar,
+      plugins: [catppuccin({
+        light: { flavor: 'latte', accent: 'green' },
+        dark: { flavor: 'mocha', accent: 'green' },
+      })],
+      pagination: false,
     }),
   ],
 })
