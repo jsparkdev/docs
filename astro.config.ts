@@ -2,57 +2,36 @@ import starlight from '@astrojs/starlight'
 import catppuccin from '@catppuccin/starlight'
 import { defineConfig } from 'astro/config'
 
-const sidebar: ReturnType<typeof sidebarItem>[] = [
-  sidebarItem('JavaScript', 'javascript'),
-  sidebarItem('TypeScript', 'typescript'),
-  sidebarItem('React', 'react'),
-  sidebarItem('Node.js', 'nodejs'),
-  sidebarItem('pnpm', 'pnpm'),
-  sidebarItem('CI/CD', 'cicd'),
-  sidebarItem('Astro', 'astro'),
-  sidebarItem('Browser', 'browser'),
-  sidebarItem('Cloudflare', 'cloudflare'),
-  sidebarItem('Open Source Tools', 'tools'),
-]
-
 export default defineConfig({
   site: 'https://docs.jspark.dev',
   integrations: [
     starlight({
-      title: '문서 모음',
-      description: '문서 모음입니다.',
-      social: [{ icon: 'github', label: 'GitHub', href: 'https://github.com/jsparkdev/docs' }],
+      title: '문서',
+      description: '웹 개발에 대한 경험과 지식을 공유합니다.',
+      social: [
+        {
+          icon: 'github',
+          label: 'GitHub',
+          href: 'https://github.com/jsparkdev/docs',
+        },
+      ],
       locales: {
         root: {
           label: '한국어',
           lang: 'ko-KR',
         },
       },
-      sidebar,
-      plugins: [catppuccin({
-        light: { flavor: 'latte', accent: 'green' },
-        dark: { flavor: 'mocha', accent: 'green' },
-      })],
+      sidebar: [
+        'open-source-tools',
+      ],
+      plugins: [
+        catppuccin({
+          light: { flavor: 'latte', accent: 'green' },
+          dark: { flavor: 'mocha', accent: 'green' },
+        }),
+      ],
       pagination: false,
-      customCss: [
-        './src/styles/font.css',
-      ],
-      head: [
-        {
-          tag: 'link',
-          attrs: {
-            rel: 'preload',
-            as: 'font',
-            type: 'font/woff2',
-            crossorigin: true,
-            href: '/jetbrains-mono.woff2',
-          },
-        },
-      ],
+      customCss: ['./src/styles/font.css'],
     }),
   ],
 })
-
-function sidebarItem(label: string, directory: string) {
-  return { label, autogenerate: { directory }, collapsed: true }
-}
