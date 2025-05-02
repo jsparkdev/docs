@@ -1,5 +1,6 @@
 ---
 title: CI/CD
+description: GitHub Actions의 동작 원리에 대해 알아봅니다.
 draft: true
 ---
 
@@ -19,5 +20,4 @@ GitHub actions
 - workflow: 전체 자동화 과정, 하나 이상의 job 포함, yaml, .github/workflows에 정의
 - job: 특정 환경에서 실행되는 여러 step으로 구성, 기본적으로 종속성 없고 병렬로 실행, 종속성 있으면 순서대로 실행, 각 러너는 한번에 하나의 job만 실행 가능.
 - step: 각 step에선 action 호출, 각 단계는 순서대로 실행됨. 
-- action: 실제 실행 명령. 재사용 가능하도록 반복되는 코드를 패키징해놓은거. 
-
+- action: 실제 실행 명령. 재사용 가능하도록 반복되는 코드를 패키징해놓은거.
